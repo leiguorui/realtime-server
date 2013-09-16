@@ -1,0 +1,17 @@
+{
+
+  // Java verticle
+  "main":"com.goodow.realtime.server.bootstrap.BootstrapVerticle",
+  "auto-redeploy": true,
+
+  // If your module is going to be registered in the Vert.x module registry you will also need the following
+  // mandatory fields
+  "description":"Google Docs–style collaboration via the use of operational transforms",
+  "licenses": ["The Apache Software License Version 2.0"],
+  "author": "Larry Tin",
+
+  // Optional fields
+  "developers": ["Larry Tin"],
+  "keywords": ["realtime", "collaboration", "operational transformation"],
+  "homepage": "https://github.com/goodow/realtime-server/"
+}
