@@ -1,7 +1,6 @@
 {
-
   // Java verticle
-  "main":"com.goodow.realtime.server.bootstrap.BootstrapVerticle",
+  "main":"com.goodow.realtime.server.bootstrap.RealtimeVerticle",
   "auto-redeploy": true,
 
   // If your module is going to be registered in the Vert.x module registry you will also need the following
@@ -12,6 +11,6 @@
 
   // Optional fields
   "developers": ["Larry Tin"],
-  "keywords": ["realtime", "collaboration", "operational transformation"],
+  "keywords": ["realtime", "collaboration", "operational", "transformation", "ot"],
   "homepage": "https://github.com/goodow/realtime-server/"
 }

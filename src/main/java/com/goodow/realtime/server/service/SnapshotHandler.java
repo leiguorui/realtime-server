@@ -11,13 +11,17 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.goodow.realtime.server.bootstrap;
+package com.goodow.realtime.server.service;
 
-import org.vertx.java.platform.Verticle;
+import com.goodow.realtime.channel.constant.Constants.Params;
 
-public class BootstrapVerticle extends Verticle {
+import org.vertx.java.core.Handler;
+import org.vertx.java.core.http.HttpServerRequest;
+
+public class SnapshotHandler implements Handler<HttpServerRequest> {
+
   @Override
-  public void start() {
-    container.deployVerticle(WebFE.class.getName());
+  public void handle(HttpServerRequest req) {
+    String id = req.params().get(Params.ID);
   }
 }
