@@ -39,7 +39,10 @@ public class RealtimeVerticle extends BusModBase {
           }
         });
     JsonObject redisConfig = config.getObject("redis");
-    RedisClient redisClient = new RedisClient(eb, redisConfig.getString("address"));
-    redisClient.deployModule(container);
+    redisConfig = redisConfig == null ? new JsonObject() : redisConfig;
+    RedisClient redisClient =
+        new RedisClient(eb, redisConfig.getString("address", "io.vertx.mod-redis"));
+    redisClient.deployModule(container, redisConfig.getString("host", "localhost"), redisConfig
+        .getInteger("port", 6379));
   }
 }

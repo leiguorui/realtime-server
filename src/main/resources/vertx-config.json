@@ -10,7 +10,9 @@
   },
   
   "redis": {
-    "address": "redis.pub"
+    "address": "redis.pub",
+    "host": "data.goodow.com",
+    "port": 6379
   }
   
 }

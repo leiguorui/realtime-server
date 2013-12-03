@@ -5,28 +5,27 @@
   <parent>
      <groupId>com.goodow.realtime</groupId>
      <artifactId>realtime-parent</artifactId>
-     <version>0.3.0-SNAPSHOT</version>
+     <version>0.5.0-SNAPSHOT</version>
   </parent>
   <artifactId>realtime-server</artifactId>
   <url>https://github.com/goodow/realtime-server/</url>
   <inceptionYear>2013</inceptionYear>
 
   <properties>
-    <maven.compiler.source>1.7</maven.compiler.source>
-    <maven.compiler.target>1.7</maven.compiler.target>
-    
     <!-- Set pullInDeps to true if you want any modules specified in the 'includes' and 'deploys' fields
     in your mod.json to be automatically pulled in during packaging and added inside your module. Doing this means your
     module won't download and install those dependencies at run-time when they're first requested. -->
-    <vertx.pullInDeps>false</vertx.pullInDeps>
-
-    <!--Plugin versions-->
-    <maven.surefire.plugin.version>2.14</maven.surefire.plugin.version>
-    <maven.failsafe.plugin.version>2.14</maven.failsafe.plugin.version>
-    <maven.javadoc.plugin.version>2.9</maven.javadoc.plugin.version>
+    <vertx.pullInDeps>true</vertx.pullInDeps>
   </properties>
 
   <dependencies>
+    <!-- Internal modules -->
+    <dependency>
+      <groupId>com.goodow.realtime</groupId>
+      <artifactId>realtime-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
     <!--Vert.x dependencies-->
     <dependency>
       <groupId>io.vertx</groupId>
@@ -47,26 +46,30 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>mod-redis-client</artifactId>
+      <version>1.1.4-SNAPSHOT</version>
     </dependency>
     
+    <!-- ElasticSearch -->
+    <dependency>
+      <groupId>org.elasticsearch</groupId>
+      <artifactId>elasticsearch</artifactId>
+    </dependency>
+    
+    <!-- Guice -->
+    <dependency>
+      <groupId>com.google.inject</groupId>
+      <artifactId>guice</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>com.netflix.rxjava</groupId>
       <artifactId>rxjava-core</artifactId>
-    </dependency>
-    
-    <!-- Internal modules -->
-    <dependency>
-      <groupId>com.goodow.realtime</groupId>
-      <artifactId>realtime-api</artifactId>
-      <version>${project.version}</version>
     </dependency>
     
     <!--Test dependencies-->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>testtools</artifactId>
-      <version>${vertx.version}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -77,8 +80,7 @@
         <groupId>io.vertx</groupId>
         <artifactId>vertx-maven-plugin</artifactId>
         <configuration>
-           <configFile>src/main/resources/config.json</configFile>
-           <classpath>src/main/resources/:src/test/resources/:target/classes/:target/test-classes/</classpath>
+           <configFile>src/main/resources/vertx-config.json</configFile>
         </configuration>
         <executions>
           <execution>
@@ -130,61 +132,6 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${maven.surefire.plugin.version}</version>
-        <configuration>
-          <includes>
-            <include>**/unit/*Test*.java</include>
-          </includes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>${maven.failsafe.plugin.version}</version>
-        <configuration>
-          <systemProperties>
-            <property>
-              <name>vertx.mods</name>
-              <value>target/mods</value>
-            </property>
-          </systemProperties>
-          <includes>
-            <include>**/integration/**</include>
-          </includes>
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>integration-test</goal>
-              <goal>verify</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>${maven.surefire.plugin.version}</version>
-        <executions>
-          <execution>
-            <id>generate-test-report</id>
-            <phase>test</phase>
-            <goals>
-              <goal>report-only</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>generate-integration-test-report</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>failsafe-report-only</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
@@ -232,21 +179,4 @@
       </plugins>
     </pluginManagement>
   </build>
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>${maven.surefire.plugin.version}</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven.javadoc.plugin.version}</version>
-        <configuration>
-          <aggregate>true</aggregate>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
 </project>
