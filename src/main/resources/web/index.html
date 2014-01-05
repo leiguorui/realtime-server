@@ -122,8 +122,8 @@
   function openConn() {
     if (!bus) {
       var options = {debug:true, forkLocal:true};
-      bus = new good.channel.WebSocketBusClient(window.location.toString() + "eventbus", options);
-      // bus = new good.channel.WebSocketBusClient("http://data.goodow.com:8080/" + "eventbus", options);
+      // bus = new good.channel.WebSocketBusClient(window.location.toString() + "eventbus", options);
+      bus = new good.channel.WebSocketBusClient("http://data.goodow.com:8080/" + "eventbus", options);
 
       bus.registerHandler("@bus.onOpen", function(message) {
         $("#status_info").text("Connected");

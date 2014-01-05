@@ -3,9 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-     <groupId>com.goodow.realtime</groupId>
-     <artifactId>realtime-parent</artifactId>
-     <version>0.5.0-SNAPSHOT</version>
+    <groupId>com.goodow.realtime</groupId>
+    <artifactId>realtime-parent</artifactId>
+    <version>0.5.0-SNAPSHOT</version>
   </parent>
   <artifactId>realtime-server</artifactId>
   <url>https://github.com/goodow/realtime-server/</url>
@@ -22,15 +22,11 @@
     <!-- Internal modules -->
     <dependency>
       <groupId>com.goodow.realtime</groupId>
-      <artifactId>realtime-api</artifactId>
+      <artifactId>realtime-channel</artifactId>
       <version>${project.version}</version>
     </dependency>
 
     <!--Vert.x dependencies-->
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-core</artifactId>
-    </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-platform</artifactId>
@@ -48,6 +44,10 @@
       <artifactId>mod-redis-client</artifactId>
       <version>1.1.4-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>mod-rxvertx</artifactId>
+    </dependency>
     
     <!-- ElasticSearch -->
     <dependency>
@@ -59,13 +59,15 @@
     <dependency>
       <groupId>com.google.inject</groupId>
       <artifactId>guice</artifactId>
+      <version>3.0</version>
     </dependency>
 
-    <dependency>
-      <groupId>com.netflix.rxjava</groupId>
-      <artifactId>rxjava-core</artifactId>
-    </dependency>
-    
+	<dependency>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-xml</artifactId>
+      <version>2.3.1</version>
+	</dependency>
+
     <!--Test dependencies-->
     <dependency>
       <groupId>io.vertx</groupId>
@@ -149,6 +151,7 @@
         </executions>
       </plugin>
     </plugins>
+    
     <!-- Required by m2e for import into eclipse. No effect on command line builds -->
     <pluginManagement>
       <plugins>

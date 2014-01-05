@@ -13,8 +13,6 @@
  */
 package com.goodow.realtime.server.service;
 
-import com.goodow.realtime.channel.constant.Constants.Params;
-
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.http.HttpServerRequest;
 
@@ -22,6 +20,6 @@ public class SnapshotHandler implements Handler<HttpServerRequest> {
 
   @Override
   public void handle(HttpServerRequest req) {
-    String id = req.params().get(Params.ID);
+    // String id = req.params().get(Params.ID);
   }
 }

@@ -6,7 +6,20 @@
     
     "bridge": true,
     "inbound_permitted": [{}],
-    "outbound_permitted": [{}]
+    "outbound_permitted": [{}], 
+    
+    "guice_binder": "com.goodow.realtime.server.bootstrap.RealtimeModule"
+  },
+  
+  "guice_binder": "com.goodow.realtime.server.bootstrap.RealtimeModule",
+  
+  "elasticsearch": {
+    "client": {
+      "transport": {
+        "host": "data.goodow.com",
+        "port": 9300
+      }
+    }
   },
   
   "redis": {

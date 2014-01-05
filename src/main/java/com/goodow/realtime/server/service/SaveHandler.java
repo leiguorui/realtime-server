@@ -13,15 +13,39 @@
  */
 package com.goodow.realtime.server.service;
 
-import com.goodow.realtime.channel.constant.Constants.Params;
-
 import org.vertx.java.core.Handler;
+import org.vertx.java.core.VertxFactory;
+import org.vertx.java.core.buffer.Buffer;
 import org.vertx.java.core.http.HttpServerRequest;
+import org.vertx.java.core.http.WebSocket;
+
+import java.io.IOException;
 
 public class SaveHandler implements Handler<HttpServerRequest> {
 
+  public static void main(String[] args) throws IOException {
+    VertxFactory.newVertx().createHttpClient().setPort(8080).connectWebsocket(
+        "/eventbus/websocket", new Handler<WebSocket>() {
+
+          @Override
+          public void handle(WebSocket ws) {
+            ws.dataHandler(new Handler<Buffer>() {
+
+              @Override
+              public void handle(Buffer data) {
+                System.out.println("Received " + data);
+              }
+            });
+            // Send some data
+            ws.writeTextFrame("hello world");
+          }
+        });
+    // Prevent the JVM from exiting
+    System.in.read();
+  }
+
   @Override
   public void handle(HttpServerRequest req) {
-    String id = req.params().get(Params.ID);
+    // String id = req.params().get(Params.ID);
   }
 }
