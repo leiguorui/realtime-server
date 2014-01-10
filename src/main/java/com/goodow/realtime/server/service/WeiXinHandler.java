@@ -2,7 +2,7 @@ package com.goodow.realtime.server.service;
 
 import com.goodow.realtime.channel.Bus;
 import com.goodow.realtime.json.JsonObject;
-import com.goodow.realtime.json.impl.Xml;
+import com.goodow.realtime.json.impl.xml.Xml;
 
 import com.google.inject.Inject;
 
@@ -44,8 +44,7 @@ public class WeiXinHandler implements Handler<HttpServerRequest> {
             "text").set("Content", "hi, " + msg.getString("Content")).remove("MsgId").set(
             "CreateTime", "" + new Date().getTime());
 
-        String xml = Xml.toXml(msg).replaceAll("LinkedHashMap", "xml").replace(" xmlns=\"\"", "");
-        log.info("reply: " + xml);
+        String xml = Xml.toXml(msg);
         req.response().end(xml);
       }
     });

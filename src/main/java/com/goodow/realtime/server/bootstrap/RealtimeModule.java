@@ -3,8 +3,8 @@ package com.goodow.realtime.server.bootstrap;
 import com.goodow.realtime.channel.Bus;
 import com.goodow.realtime.vertx.VertxBusServer;
 
+import com.alienos.guice.VertxModule;
 import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
@@ -17,15 +17,24 @@ import org.vertx.java.platform.Container;
 
 import java.util.logging.Logger;
 
-public class RealtimeModule extends AbstractModule {
+public class RealtimeModule extends AbstractModule implements VertxModule {
   private static final Logger log = Logger.getLogger(RealtimeModule.class.getName());
 
-  @Inject private Vertx vertx;
-  @Inject private Container container;
+  private Vertx vertx;
+  private Container container;
+
+  @Override
+  public void setContainer(Container container) {
+    this.container = container;
+  }
+
+  @Override
+  public void setVertx(Vertx vertx) {
+    this.vertx = vertx;
+  }
 
   @Override
   protected void configure() {
-    requestInjection(this);
   }
 
   @Provides

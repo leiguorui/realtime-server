@@ -57,16 +57,20 @@
     
     <!-- Guice -->
     <dependency>
-      <groupId>com.google.inject</groupId>
-      <artifactId>guice</artifactId>
-      <version>3.0</version>
+      <groupId>com.goodow.vertx</groupId>
+      <artifactId>mod-guice</artifactId>
+      <version>1.0.0-beta1</version>
     </dependency>
 
-	<dependency>
+    <!-- Xml -->
+    <dependency>
       <groupId>com.fasterxml.jackson.dataformat</groupId>
       <artifactId>jackson-dataformat-xml</artifactId>
-      <version>2.3.1</version>
-	</dependency>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml</groupId>
+      <artifactId>aalto-xml</artifactId>
+    </dependency>
 
     <!--Test dependencies-->
     <dependency>
@@ -82,7 +86,8 @@
         <groupId>io.vertx</groupId>
         <artifactId>vertx-maven-plugin</artifactId>
         <configuration>
-           <configFile>src/main/resources/vertx-config.json</configFile>
+          <configFile>src/main/resources/vertx-config.json</configFile>
+          <classpath>src/main/resources/:src/test/resources/:target/classes/:target/test-classes/</classpath>
         </configuration>
         <executions>
           <execution>

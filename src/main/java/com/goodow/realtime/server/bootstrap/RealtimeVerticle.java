@@ -21,10 +21,12 @@ import org.vertx.java.core.json.JsonObject;
 
 import io.vertx.java.redis.RedisClient;
 
+// @GuiceVertxBinding(modules = {RealtimeModule.class})
 public class RealtimeVerticle extends BusModBase {
   @Override
   public void start(final Future<Void> startedResult) {
     super.start();
+    // GuiceVerticleHelper.inject(this, vertx, container);
 
     JsonObject webServerConfig = config.getObject("webServer");
     container.deployVerticle(RealtimeWebServer.class.getName(), webServerConfig,

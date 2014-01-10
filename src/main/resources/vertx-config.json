@@ -6,12 +6,8 @@
     
     "bridge": true,
     "inbound_permitted": [{}],
-    "outbound_permitted": [{}], 
-    
-    "guice_binder": "com.goodow.realtime.server.bootstrap.RealtimeModule"
+    "outbound_permitted": [{}]
   },
-  
-  "guice_binder": "com.goodow.realtime.server.bootstrap.RealtimeModule",
   
   "elasticsearch": {
     "client": {
