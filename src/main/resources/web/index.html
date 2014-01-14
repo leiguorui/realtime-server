@@ -100,7 +100,7 @@
 
   function subscribe(address) {
     if (bus) {
-      bus.registerHandler(address, function(message) {
+      var handlerRegistration = bus.registerHandler(address, function(message) {
         $('#received').append("Address:" + address + " Message:" + JSON.stringify(message.body()) + "<br>");
         var f = function(message) {
           console.log(JSON.stringify(message.body()));
@@ -109,6 +109,9 @@
       });
       $('#subscribed').append($("<code>").text("Address:" + address));
       $('#subscribed').append($("</code><br>"));
+      
+      // You can unregister the handler like this:
+      // handlerRegistration.unregisterHandler();
     }
   }
 
@@ -123,19 +126,19 @@
     if (!bus) {
       var options = {debug:true, forkLocal:true};
       // bus = new good.channel.WebSocketBusClient(window.location.toString() + "eventbus", options);
-      bus = new good.channel.WebSocketBusClient("http://data.goodow.com:8080/" + "eventbus", options);
+      bus = new good.channel.WebSocketBusClient("http://data.goodow.com:8080/eventbus", options);
 
-      bus.registerHandler("@bus.onOpen", function(message) {
+      bus.registerHandler("@goodow.bus.onOpen", function(message) {
         $("#status_info").text("Connected");
         console.log("Opened at: " + new Date().toString());
       });
 
-      bus.registerHandler("@bus.onClose", function(message) {
+      bus.registerHandler("@goodow.bus.onClose", function(message) {
         $("#status_info").text("Not connected");
         console.log("Closed at: " + new Date().toString());
       });
       
-      bus.registerHandler("@bus.onError", function(error) {
+      bus.registerHandler("@goodow.bus.onError", function(error) {
         console.log("Error at: " + error);
       });
     }

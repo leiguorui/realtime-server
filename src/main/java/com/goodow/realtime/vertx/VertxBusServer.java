@@ -4,6 +4,7 @@ import com.goodow.realtime.channel.Bus;
 import com.goodow.realtime.channel.Message;
 import com.goodow.realtime.channel.State;
 import com.goodow.realtime.core.Handler;
+import com.goodow.realtime.core.HandlerRegistration;
 import com.goodow.realtime.json.impl.JreJsonArray;
 import com.goodow.realtime.json.impl.JreJsonObject;
 
@@ -12,8 +13,6 @@ import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,8 +29,6 @@ public class VertxBusServer implements Bus {
     }
   }
 
-  @SuppressWarnings("rawtypes") private final ConcurrentMap<Handler, org.vertx.java.core.Handler> handlerMap =
-      new ConcurrentHashMap<Handler, org.vertx.java.core.Handler>();
   private final EventBus eb;
   private State state;
 
@@ -68,7 +65,8 @@ public class VertxBusServer implements Bus {
 
   @SuppressWarnings("rawtypes")
   @Override
-  public Bus registerHandler(String address, final Handler<? extends Message> handler) {
+  public HandlerRegistration registerHandler(final String address,
+      final Handler<? extends Message> handler) {
     final org.vertx.java.core.Handler<org.vertx.java.core.eventbus.Message> vertxHandler =
         new org.vertx.java.core.Handler<org.vertx.java.core.eventbus.Message>() {
           @SuppressWarnings("unchecked")
@@ -80,14 +78,25 @@ public class VertxBusServer implements Bus {
     eb.registerHandler(address, vertxHandler, new org.vertx.java.core.Handler<AsyncResult<Void>>() {
       @Override
       public void handle(AsyncResult<Void> ar) {
-        if (ar.succeeded()) {
-          handlerMap.put(handler, vertxHandler);
-        } else {
+        if (ar.failed()) {
           log.log(Level.SEVERE, "Failed to register handler on event bus", ar.cause());
         }
       }
     });
-    return this;
+    return new HandlerRegistration() {
+      @Override
+      public void unregisterHandler() {
+        eb.unregisterHandler(address, vertxHandler,
+            new org.vertx.java.core.Handler<AsyncResult<Void>>() {
+              @Override
+              public void handle(AsyncResult<Void> ar) {
+                if (ar.failed()) {
+                  log.log(Level.SEVERE, "Failed to unregister handler on event bus", ar.cause());
+                }
+              }
+            });
+      }
+    };
   }
 
   @Override
@@ -102,25 +111,6 @@ public class VertxBusServer implements Bus {
           }
         };
     eb.send(address, unwrap(msg), handler);
-    return this;
-  }
-
-  @SuppressWarnings({"unchecked", "rawtypes"})
-  @Override
-  public Bus unregisterHandler(String address, final Handler<? extends Message> handler) {
-    org.vertx.java.core.Handler vertxHandler = handlerMap.get(handler);
-    handlerMap.remove(handler);
-    if (vertxHandler != null) {
-      eb.unregisterHandler(address, vertxHandler,
-          new org.vertx.java.core.Handler<AsyncResult<Void>>() {
-            @Override
-            public void handle(AsyncResult<Void> ar) {
-              if (ar.failed()) {
-                log.log(Level.SEVERE, "Failed to unregister handler on event bus", ar.cause());
-              }
-            }
-          });
-    }
     return this;
   }
 }
