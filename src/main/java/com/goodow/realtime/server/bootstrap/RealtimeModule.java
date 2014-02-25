@@ -22,6 +22,7 @@ public class RealtimeModule extends AbstractModule implements VertxModule {
 
   private Vertx vertx;
   private Container container;
+  //as
 
   @Override
   public void setContainer(Container container) {
